@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- AdSense 審査用コード -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2853898597507293" crossorigin="anonymous"></script>
+    
+    <title>タピオカ・クリッカー Pro v2.2 | 蕨本店</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;900&display=swap');
+        
+        body {
+            font-family: 'M PLUS Rounded 1c', sans-serif;
+        }
+
+        .ad-slot {
+            background-color: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px; /* 広告の高さを確保 */
+            width: 100%;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+
+        .tapioca-btn {
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tapioca-btn:active {
+            transform: scale(0.9) rotate(-3deg);
+        }
+
+        @keyframes float-up {
+            0% { opacity: 0; transform: translateY(0) scale(0.5); }
+            20% { opacity: 1; transform: translateY(-20px) scale(1.2); }
+            100% { opacity: 0; transform: translateY(-80px) scale(1); }
+        }
+
+        .floating-score {
+            position: absolute;
+            pointer-events: none;
+            animation: float-up 0.8s ease-out forwards;
+            font-weight: 900;
+            color: #92400e;
+            z-index: 50;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-amber-50 to-orange-100 text-stone-800 min-h-screen flex flex-col items-center p-4">
+
+    <!-- TOP AD -->
+    <div class="w-full max-w-[728px] ad-slot mb-6 shadow-inner bg-white/50">
+        <ins class="adsbygoogle"
+             style="display:block; min-width: 250px; min-height: 90px;"
+             data-ad-client="ca-pub-2853898597507293"
+             data-ad-slot="default"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>
+
+    <main class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- 左サイド：ステータス -->
+        <div class="lg:col-span-1 space-y-4">
+            <div class="glass-card p-6 rounded-3xl shadow-lg text-center border-b-4 border-amber-400">
+                <h2 class="text-xs font-black text-amber-600 uppercase tracking-widest mb-1">現在の売上</h2>
+                <div class="text-4xl font-black text-amber-900" id="money-display">¥ 0</div>
+                <hr class="my-4 border-amber-100">
+                <div class="flex justify-between text-xs font-bold text-stone-500">
+                    <span>毎秒の利益:</span>
+                    <span class="text-amber-700">¥ <span id="mps-display">0</span></span>
+                </div>
+            </div>
+
+            <div class="bg-white/40 p-4 rounded-2xl text-[10px] font-mono text-stone-500">
+                <p>STATUS: <span class="text-green-600">CONNECTED</span></p>
+                <p>NODE: WARABI-CITY-LOCAL</p>
+                <p id="auth-status">AUTH: INITIALIZING...</p>
+            </div>
+        </div>
+
+        <!-- 中央：クリックエリア -->
+        <div class="lg:col-span-2 glass-card p-10 rounded-[3rem] shadow-2xl flex flex-col items-center justify-center relative overflow-hidden min-h-[500px]">
+            <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#92400e 1px, transparent 1px); background-size: 20px 20px;"></div>
+            
+            <h1 class="text-3xl font-black text-amber-900 mb-8 z-10 text-center drop-shadow-sm">🧋 蕨タピオカ帝国 v2.2</h1>
+
+            <div id="tapioca-target" class="tapioca-btn cursor-pointer relative z-10 drop-shadow-2xl">
+                <svg width="260" height="260" viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="teaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fde68a" />
+                            <stop offset="100%" style="stop-color:#fbbf24" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M25 15 L75 15 L68 88 C68 93 32 93 32 88 Z" fill="url(#teaGrad)" stroke="#451a03" stroke-width="1.5"/>
+                    <path d="M25 15 Q50 20 75 15" fill="none" stroke="#451a03" stroke-width="1.2"/>
+                    <circle cx="40" cy="78" r="4" fill="#1c1917" />
+                    <circle cx="55" cy="82" r="4" fill="#1c1917" />
+                    <circle cx="48" cy="85" r="4" fill="#1c1917" />
+                    <circle cx="60" cy="75" r="4" fill="#1c1917" />
+                    <circle cx="38" cy="85" r="4" fill="#1c1917" />
+                    <circle cx="50" cy="72" r="4" fill="#1c1917" />
+                    <rect x="47" y="2" width="6" height="80" fill="#f43f5e" rx="3" stroke="#451a03" stroke-width="0.5" />
+                </svg>
+            </div>
+
+            <div class="mt-12 px-8 py-3 bg-amber-900 text-amber-50 rounded-full text-xs font-black shadow-lg animate-bounce z-10">
+                TAP TO SELL!
+            </div>
+        </div>
+
+        <!-- 右サイド：ショップ -->
+        <div class="lg:col-span-1 space-y-4">
+            <div class="glass-card p-6 rounded-3xl shadow-lg border-t-4 border-amber-400">
+                <h3 class="font-black text-stone-700 mb-4 flex items-center gap-2 text-sm">
+                    <span class="bg-amber-100 p-2 rounded-lg text-lg">🏠</span> 投資 (イートラスト支店)
+                </h3>
+                <div id="shop-container" class="space-y-2">
+                    <!-- JS -->
+                </div>
+            </div>
+            
+            <!-- Side Ad Container -->
+            <div class="ad-slot bg-white p-2">
+                 <ins class="adsbygoogle"
+                      style="display:block; min-width: 250px; min-height: 250px;"
+                      data-ad-client="ca-pub-2853898597507293"
+                      data-ad-slot="default"
+                      data-ad-format="rectangle"></ins>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full max-w-6xl mt-12 py-8 border-t border-amber-200 text-center">
+        <p class="text-[10px] text-stone-400 font-bold uppercase tracking-[0.3em] mb-2">Warabi-Etrust Digital Solutions</p>
+        <p class="text-[9px] text-stone-300 font-mono">Archive Data Path: archive.org/metadata/tapioca-clicker-auth-key</p>
+    </footer>
+
+    <script>
+        async function fetchArchiveAuth() {
+            const statusEl = document.getElementById('auth-status');
+            try {
+                const res = await fetch("https://archive.org/metadata/tapioca-clicker-auth-key");
+                statusEl.innerText = "AUTH: ARCHIVE_SYNC_OK";
+                statusEl.className = "text-green-600";
+            } catch (e) {
+                statusEl.innerText = "AUTH: OFFLINE_MODE";
+                statusEl.className = "text-amber-600";
+            }
+        }
+
+        // AdSense読み込みの修正
+        function initAds() {
+            try {
+                const ads = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
+                ads.forEach(ins => {
+                    // 要素の幅が確定している場合のみpushする
+                    if (ins.offsetWidth > 0 || ins.parentElement.offsetWidth > 0) {
+                        (window.adsbygoogle = window.adsbygoogle || []).push({});
+                    }
+                });
+            } catch (e) {
+                console.error("AdSense Init Error:", e);
+            }
+        }
+
+        window.onload = () => {
+            fetchArchiveAuth();
+            // レイアウトが確定するまで少し待機してから広告を初期化
+            setTimeout(initAds, 1500);
+        };
+
+        let money = 0;
+        let mps = 0;
+        let clickPower = 1;
+
+        const upgrades = [
+            { name: '蕨の新人バイト', cost: 15, mps: 1, count: 0, icon: '🔰' },
+            { name: '特選茶葉', cost: 100, mps: 5, count: 0, icon: '🍃' },
+            { name: '高速サーバー', cost: 1100, mps: 45, count: 0, icon: '⚙️' },
+            { name: '蕨駅前店', cost: 12000, mps: 280, count: 0, icon: '🏢' }
+        ];
+
+        function updateUI() {
+            document.getElementById('money-display').innerText = `¥ ${Math.floor(money).toLocaleString()}`;
+            document.getElementById('mps-display').innerText = mps.toLocaleString();
+            
+            const shop = document.getElementById('shop-container');
+            shop.innerHTML = '';
+            upgrades.forEach((item) => {
+                const canBuy = money >= item.cost;
+                const btn = document.createElement('button');
+                btn.className = `w-full p-3 rounded-2xl border-2 flex justify-between items-center transition-all ${canBuy ? 'bg-white border-amber-200 hover:border-amber-400 active:scale-95' : 'bg-stone-50 border-stone-100 opacity-40 cursor-not-allowed'}`;
+                btn.onclick = () => {
+                    if(money >= item.cost) {
+                        money -= item.cost;
+                        item.count++;
+                        mps += item.mps;
+                        item.cost = Math.floor(item.cost * 1.35);
+                        updateUI();
+                    }
+                };
+                btn.innerHTML = `<div class="text-left"><div class="font-black text-[10px] text-stone-700">${item.name}</div><div class="text-[9px] text-amber-600 font-bold">¥${item.cost.toLocaleString()}</div></div><div class="text-xl font-black text-amber-900/10">${item.count}</div>`;
+                shop.appendChild(btn);
+            });
+        }
+
+        document.getElementById('tapioca-target').onclick = (e) => { 
+            money += clickPower; 
+            updateUI(); 
+            const score = document.createElement('div');
+            score.className = 'floating-score text-xl';
+            score.innerText = `+¥${clickPower}`;
+            score.style.left = `${e.clientX}px`;
+            score.style.top = `${e.clientY}px`;
+            document.body.appendChild(score);
+            setTimeout(() => score.remove(), 800);
+        };
+
+        setInterval(() => { if(mps > 0) { money += mps / 10; updateUI(); } }, 100);
+        updateUI();
+    </script>
+</body>
+</html>
