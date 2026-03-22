@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タピオカ・クリッカー Pro | 収益化モデル</title>
+    
+    <!-- Google AdSense スクリプト -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2853898597507293" crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 広告枠のスタイル */
+        .ad-slot {
+            background-color: #f3f4f6;
+            border: 1px dashed #d1d5db;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            overflow: hidden;
+            min-height: 90px;
+        }
+        /* ゲームの演出 */
+        .tapioca-balloon:active { transform: scale(0.95); transition: transform 0.1s; }
+        @keyframes float-money {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-50px); }
+        }
+        .money-animation {
+            position: absolute;
+            pointer-events: none;
+            animation: float-money 1s ease-out forwards;
+            font-weight: bold;
+            color: #f59e0b;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-900 min-h-screen flex flex-col items-center p-4">
+
+    <!-- 広告枠：上部バナー -->
+    <div class="w-full max-w-[728px] ad-slot mb-6 rounded-lg shadow-inner overflow-hidden" style="width: 100%; min-width: 250px;">
+        <ins class="adsbygoogle"
+             style="display:block; width: 100%; height: 90px;"
+             data-ad-client="ca-pub-2853898597507293"
+             data-ad-slot="default"
+             data-ad-format="horizontal"
+             data-full-width-responsive="true"></ins>
+    </div>
+
+    <main class="flex-grow flex flex-col items-center w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- ゲームメインエリア -->
+        <div class="md:col-span-2 flex flex-col items-center justify-center bg-white p-8 rounded-3xl shadow-xl border border-stone-100 relative overflow-hidden">
+            <header class="text-center mb-8 relative z-10">
+                <h1 class="text-3xl font-black text-amber-900 tracking-tighter">🧋 タピオカ・クリッカー Pro</h1>
+                <p class="text-sm text-stone-500 mt-1">タップして、お店を大きくしよう！</p>
+            </header>
+
+            <div id="stats" class="text-center mb-10 relative z-10 bg-amber-50 px-8 py-4 rounded-full border border-amber-100">
+                <div class="text-5xl font-extrabold text-amber-600 money-font" id="money-display">¥ 0</div>
+                <div class="text-sm text-stone-500 mt-1">毎秒の収益: ¥ <span id="mps-display">0</span></div>
+            </div>
+
+            <div id="tapioca-button" class="tapioca-balloon cursor-pointer select-none relative z-10">
+                <svg width="200" height="200" viewBox="0 0 100 100">
+                    <defs>
+                        <linearGradient id="tea-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M30 20 L70 20 L65 85 C65 90 35 90 35 85 Z" fill="url(#tea-gradient)" stroke="#451a03" stroke-width="2"/>
+                    <circle cx="45" cy="70" r="4" fill="#1c1917" />
+                    <circle cx="55" cy="75" r="4" fill="#1c1917" />
+                    <circle cx="50" cy="65" r="4" fill="#1c1917" />
+                    <rect x="48" y="5" width="4" height="75" fill="#ef4444" rx="2" />
+                </svg>
+            </div>
+            
+            <p class="mt-10 text-xs text-stone-400 animate-pulse relative z-10">タピオカをタップ！</p>
+            
+            <div class="absolute inset-0 opacity-5 z-0">
+                <svg width="100%" height="100%">
+                    <pattern id="pattern-circles" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <circle cx="20" cy="20" r="10" fill="#d97706"/>
+                    </pattern>
+                    <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-circles)"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- ショップ & 広告エリア -->
+        <div class="flex flex-col gap-6">
+            <!-- 広告枠：サイドバー -->
+            <div class="w-[300px] h-[250px] ad-slot mx-auto rounded-xl shadow-inner border border-stone-200 bg-white overflow-hidden" style="width: 300px; height: 250px;">
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:300px;height:250px"
+                     data-ad-client="ca-pub-2853898597507293"
+                     data-ad-slot="default"></ins>
+            </div>
+
+            <div class="bg-white p-6 rounded-3xl shadow-xl border border-stone-100 flex-grow">
+                <h2 class="text-xl font-bold text-stone-800 mb-5 border-b pb-3 border-stone-100">アップグレード</h2>
+                <div id="shop-items" class="space-y-3"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full max-w-4xl mt-12 py-6 border-t border-stone-100 text-center text-xs text-stone-400">
+        © 2024 Tapioca Clicker Pro - すべての権利を保有
+    </footer>
+
+    <script>
+        // AdSense の初期化処理を遅延実行
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                try {
+                    const ads = document.querySelectorAll('.adsbygoogle:not([data-adsbygoogle-status="done"])');
+                    ads.forEach(ins => {
+                        // 親要素の幅が 0 ではないことを確認してから push
+                        if (ins.offsetWidth > 0 || ins.parentElement.offsetWidth > 0) {
+                            (window.adsbygoogle = window.adsbygoogle || []).push({});
+                        }
+                    });
+                } catch (e) {
+                    console.error("AdSense initialization failed:", e);
+                }
+            }, 500); // 500ms 待機してレイアウトを安定させる
+        });
+
+        let state = {
+            money: 0,
+            mps: 0,
+            items: [
+                { id: 'b1', name: '蕨のバイトさん', cost: 15, mps: 1, owned: 0, icon: '🙋‍♂️' },
+                { id: 'b2', name: '高性能ミキサー', cost: 100, mps: 5, owned: 0, icon: '🌀' },
+                { id: 'b3', name: 'イートラスト支店', cost: 1000, mps: 20, owned: 0, icon: '🏠' },
+                { id: 'b4', name: 'タピオカ農園', cost: 10000, mps: 100, owned: 0, icon: '🌴' }
+            ]
+        };
+
+        const moneyDisplay = document.getElementById('money-display');
+        const mpsDisplay = document.getElementById('mps-display');
+        const shopItemsContainer = document.getElementById('shop-items');
+        const tapiocaButton = document.getElementById('tapioca-button');
+
+        function updateUI() {
+            moneyDisplay.innerText = `¥ ${Math.floor(state.money).toLocaleString()}`;
+            mpsDisplay.innerText = state.mps.toLocaleString();
+            renderShop();
+        }
+
+        function renderShop() {
+            shopItemsContainer.innerHTML = '';
+            state.items.forEach(item => {
+                const canAfford = state.money >= item.cost;
+                const div = document.createElement('button');
+                div.className = `w-full flex justify-between items-center p-4 rounded-xl border-2 transition-all ${canAfford ? 'bg-white border-amber-200 cursor-pointer shadow-sm hover:border-amber-400' : 'bg-gray-100 border-gray-200 opacity-60'}`;
+                div.onclick = () => {
+                    if (state.money >= item.cost) {
+                        state.money -= item.cost;
+                        item.owned++;
+                        state.mps += item.mps;
+                        item.cost = Math.floor(item.cost * 1.2);
+                        updateUI();
+                    }
+                };
+                div.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">${item.icon}</span>
+                        <div class="text-left">
+                            <div class="font-bold text-sm">${item.name}</div>
+                            <div class="text-xs text-amber-600">¥ ${item.cost.toLocaleString()}</div>
+                        </div>
+                    </div>
+                    <div class="text-3xl font-black text-amber-500">${item.owned}</div>
+                `;
+                shopItemsContainer.appendChild(div);
+            });
+        }
+
+        tapiocaButton.onclick = (e) => {
+            state.money += 1;
+            updateUI();
+            
+            const animation = document.createElement('div');
+            animation.className = 'money-animation';
+            animation.innerText = '+¥1';
+            animation.style.left = `${e.pageX}px`;
+            animation.style.top = `${e.pageY}px`;
+            document.body.appendChild(animation);
+            setTimeout(() => animation.remove(), 1000);
+        };
+
+        setInterval(() => {
+            if (state.mps > 0) {
+                state.money += state.mps / 10;
+                updateUI();
+            }
+        }, 100);
+
+        updateUI();
+    </script>
+</body>
+</html>
